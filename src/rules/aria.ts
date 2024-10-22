@@ -58,6 +58,31 @@ function checkAriaRequired(html: string): boolean {
   return isValid;
 }
 
+function checkAriaFocusManagement(html: string): boolean {
+  /**
+   * ARIA Focus Management
+   * ARIA4:
+   * Ensure proper focus management for modal dialogs or dynamic elements using aria-hidden or tabindex="-1".
+   */
+  const focusableElementsRegex = /<(input|button|select|textarea|a|div|span)\b([^>]*)>/gi;
+  const ariaHiddenRegex = /\baria-hidden=["']true["']/i;
+  const tabIndexRegex = /\btabindex=["']-1["']/i;
+
+  let match;
+  let isValid = true;
+
+  while ((match = focusableElementsRegex.exec(html)) !== null) {
+    const attributes = match[2];
+    
+    if (ariaHiddenRegex.test(attributes) || tabIndexRegex.test(attributes)) {
+      console.warn(`Focusable element ${match[0]} should manage focus properly with aria-hidden or tabindex.`);
+      isValid = false;
+    }
+  }
+
+  return isValid;
+}
+
 function checkAriaRoles(html: string): boolean {
   /**
    * ARIA Roles
@@ -141,6 +166,99 @@ function checkAriaLandmarks(html: string): boolean {
       console.warn(`Missing or invalid ARIA landmark role: ${role}`);
       isValid = false;
     }
+  }
+
+  return isValid;
+}
+
+function checkAriaLiveRegions(html: string): boolean {
+  /**
+   * ARIA Live Regions
+   * ARIA22:
+   * Ensure the use of aria-live for dynamic content updates like notifications or status messages.
+   */
+  const liveRegionRegex = /\baria-live=["'](polite|assertive)["']/i;
+
+  if (!liveRegionRegex.test(html)) {
+    console.warn('Missing aria-live attribute for live region updates.');
+    return false;
+  }
+
+  return true;
+}
+
+function checkAriaKeyboardNavigation(html: string): boolean {
+  /**
+   * ARIA Keyboard Navigation
+   * ARIA9:
+   * Ensure that interactive elements are keyboard accessible using tabindex and focus management.
+   */
+  const focusableElementsRegex = /<(button|a|input|select|textarea)\b([^>]*)>/gi;
+  const tabIndexRegex = /\btabindex=["'][0-9]+["']/i;
+
+  let match;
+  let isValid = true;
+
+  while ((match = focusableElementsRegex.exec(html)) !== null) {
+    const attributes = match[2];
+    
+    if (!tabIndexRegex.test(attributes)) {
+      console.warn(`Missing tabindex on interactive element ${match[0]} for keyboard accessibility.`);
+      isValid = false;
+    }
+  }
+
+  return isValid;
+}
+
+function checkAriaRelationships(html: string): boolean {
+  /**
+   * ARIA Relationships
+   * ARIA6, ARIA7:
+   * Validate that aria-owns, aria-controls, and aria-activedescendant point to existing elements.
+   */
+  const relationshipAttributes = ['aria-owns', 'aria-controls', 'aria-activedescendant'];
+  const relationshipRegex = new RegExp(`\\b(${relationshipAttributes.join('|')})=["'][^"']+["']`, 'gi');
+
+  let match;
+  let isValid = true;
+
+  while ((match = relationshipRegex.exec(html)) !== null) {
+    const relationship = match[0];
+    const targetId = relationship.split('=')[1].replace(/["']/g, '');
+
+    if (!new RegExp(`id=["']${targetId}["']`).test(html)) {
+      console.warn(`ARIA relationship attribute ${relationship} references non-existing element ID: ${targetId}`);
+      isValid = false;
+    }
+  }
+
+  return isValid;
+}
+
+function checkAriaRoleDuplications(html: string): boolean {
+  /**
+   * ARIA Role Duplications
+   * ARIA5:
+   * Ensure no element has conflicting ARIA roles, such as combining button and link roles.
+   */
+  const conflictingRoles = [
+    { role: 'button', conflictingRole: 'link' },
+    { role: 'heading', conflictingRole: 'banner' }
+  ];
+  const roleRegex = /role=["']?([^"']*)["']?/gi;
+
+  let match;
+  let isValid = true;
+
+  while ((match = roleRegex.exec(html)) !== null) {
+    const role = match[1].trim();
+    conflictingRoles.forEach(({ role: primaryRole, conflictingRole }) => {
+      if (role === primaryRole && new RegExp(`role=["']${conflictingRole}["']`).test(html)) {
+        console.warn(`Element has conflicting roles: ${primaryRole} and ${conflictingRole}.`);
+        isValid = false;
+      }
+    });
   }
 
   return isValid;
