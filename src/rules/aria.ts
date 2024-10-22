@@ -1,15 +1,22 @@
 export function checkAria(html: string): boolean {
-  const labelsCheck = checkAriaLabels(html);
-  const requiredCheck = checkAriaRequired(html);
-  const rolesCheck = checkAriaRoles(html);
-  const propertiesCheck = checkAriaProperties(html);
-  const errorsCheck = checkAriaErrors(html);
-  const landmarksCheck = checkAriaLandmarks(html);
+  const ariaRules = [
+    checkAriaLabels,
+    checkAriaRequired,
+    checkAriaFocusMgmt,
+    checkAriaRoles,
+    checkAriaProperties,
+    checkAriaErrors,
+    checkAriaLandmarks,
+    checkAriaLiveRegions,
+    checkAriaKeyboardNavigation,
+    checkAriaRelationships,
+    checkAriaRoleDuplications,
+  ];
 
-  return labelsCheck && requiredCheck && rolesCheck && propertiesCheck && errorsCheck && landmarksCheck;
+  return ariaRules.every(check => check(html));
 }
 
-export function checkAriaLabels(html: string): boolean {
+function checkAriaLabels(html: string): boolean {
   /**
    * ARIA Labeling
    * ARIA1, ARIA6, ARIA7, ARIA8, ARIA9, ARIA10, ARIA14, ARIA16:
@@ -58,7 +65,7 @@ function checkAriaRequired(html: string): boolean {
   return isValid;
 }
 
-function checkAriaFocusManagement(html: string): boolean {
+function checkAriaFocusMgmt(html: string): boolean {
   /**
    * ARIA Focus Management
    * ARIA4:
