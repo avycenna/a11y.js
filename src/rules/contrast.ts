@@ -7,7 +7,7 @@ export function checkContrastRatio(color1: string, color2: string): boolean {
   return contrastRatio >= 4.5;
 }
 
-function getContrastRatio(rgb1: number[], rgb2: number[]): number {
+export function getContrastRatio(rgb1: number[], rgb2: number[]): number {
   const lum1 = getLuminance(rgb1);
   const lum2 = getLuminance(rgb2);
   const brightest = Math.max(lum1, lum2);
@@ -15,7 +15,7 @@ function getContrastRatio(rgb1: number[], rgb2: number[]): number {
   return (brightest + 0.05) / (darkest + 0.05);
 }
 
-function getLuminance(rgb: number[]): number {
+export function getLuminance(rgb: number[]): number {
   const a = rgb.map((v) => {
     v /= 255;
     return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
@@ -23,8 +23,8 @@ function getLuminance(rgb: number[]): number {
   return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
 }
 
-// Convert any color mode to RGB
-function convertToRgb(color: string): number[] {
+// Export the function so it can be tested
+export function convertToRgb(color: string): number[] {
   const mode = detectColorMode(color);
 
   switch (mode) {
@@ -41,7 +41,27 @@ function convertToRgb(color: string): number[] {
   }
 }
 
-function hexToRgb(hex: string): number[] {
+// Detect the input color mode
+export function detectColorMode(input: string): "hex" | "rgb" | "hsl" | "unknown" {
+  input = input.trim();
+
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(input)) {
+    return "hex";
+  }
+
+  if (/^rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(\d*(\.\d+)?)\s*)?\)$/.test(input)) {
+    return "rgb";
+  }
+
+  if (/^hsla?\(\s*(\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*(,\s*(\d*(\.\d+)?)\s*)?)?\)$/.test(input)) {
+    return "hsl";
+  }
+
+  return "unknown";
+}
+
+// Export the color conversion helper functions
+export function hexToRgb(hex: string): number[] {
   let bigint = parseInt(hex.slice(1), 16);
   let r = (bigint >> 16) & 255;
   let g = (bigint >> 8) & 255;
@@ -49,7 +69,7 @@ function hexToRgb(hex: string): number[] {
   return [r, g, b];
 }
 
-function hslToRgb(h: number, s: number, l: number): number[] {
+export function hslToRgb(h: number, s: number, l: number): number[] {
   s /= 100;
   l /= 100;
 
@@ -77,23 +97,4 @@ function hslToRgb(h: number, s: number, l: number): number[] {
     Math.round((g + m) * 255),
     Math.round((b + m) * 255)
   ];
-}
-
-// Detect the input color mode
-function detectColorMode(input: string): "hex" | "rgb" | "hsl" | "unknown" {
-  input = input.trim();
-
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(input)) {
-    return "hex";
-  }
-
-  if (/^rgba?\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}(\s*,\s*(\d*(\.\d+)?)\s*)?\)$/.test(input)) {
-    return "rgb";
-  }
-
-  if (/^hsla?\(\s*(\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*(,\s*(\d*(\.\d+)?)\s*)?)?\)$/.test(input)) {
-    return "hsl";
-  }
-
-  return "unknown";
 }
