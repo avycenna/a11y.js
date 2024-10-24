@@ -12,7 +12,7 @@ describe('checkContrastRatio', () => {
 });
 
 describe('checkAlt', () => {
-  it('should return true for tags that don\'t require alt', () => {
+  it("should return true for tags that don't require alt", () => {
     const html = `
       <main>
         <div>
