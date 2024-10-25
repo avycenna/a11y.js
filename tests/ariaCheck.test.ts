@@ -11,7 +11,7 @@ import {
   checkAriaKeyboardNavigation,
   checkAriaRelationships,
   checkAriaRoleDuplications,
-} from 'src/rules/aria';
+} from '../src/rules/aria';
 
 describe('ARIA Accessibility Tests', () => {
   let validHtml = '';
