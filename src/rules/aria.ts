@@ -16,7 +16,7 @@ export function checkAria(html: string): boolean {
   return ariaRules.every(check => check(html));
 }
 
-function checkAriaLabels(html: string): boolean {
+export function checkAriaLabels(html: string): boolean {
   /**
    * ARIA Labeling
    * ARIA1, ARIA6, ARIA7, ARIA8, ARIA9, ARIA10, ARIA14, ARIA16:
@@ -41,7 +41,7 @@ function checkAriaLabels(html: string): boolean {
   return isValid;
 }
 
-function checkAriaRequired(html: string): boolean {
+export function checkAriaRequired(html: string): boolean {
   /**
    * ARIA Required Fields
    * ARIA2:
@@ -65,7 +65,7 @@ function checkAriaRequired(html: string): boolean {
   return isValid;
 }
 
-function checkAriaFocusMgmt(html: string): boolean {
+export function checkAriaFocusMgmt(html: string): boolean {
   /**
    * ARIA Focus Management
    * ARIA4:
@@ -90,7 +90,7 @@ function checkAriaFocusMgmt(html: string): boolean {
   return isValid;
 }
 
-function checkAriaRoles(html: string): boolean {
+export function checkAriaRoles(html: string): boolean {
   /**
    * ARIA Roles
    * ARIA4, ARIA12, ARIA20:
@@ -113,7 +113,7 @@ function checkAriaRoles(html: string): boolean {
   return isValid;
 }
 
-function checkAriaProperties(html: string): boolean {
+export function checkAriaProperties(html: string): boolean {
   /**
    * ARIA States and Properties
    * ARIA5, ARIA15:
@@ -135,7 +135,7 @@ function checkAriaProperties(html: string): boolean {
   return isValid;
 }
 
-function checkAriaErrors(html: string): boolean {
+export function checkAriaErrors(html: string): boolean {
   /**
    * ARIA Error Identification
    * ARIA18, ARIA19, ARIA21:
@@ -155,7 +155,7 @@ function checkAriaErrors(html: string): boolean {
   return isValid;
 }
 
-function checkAriaLandmarks(html: string): boolean {
+export function checkAriaLandmarks(html: string): boolean {
   /**
    * ARIA Landmarks
    * ARIA11, ARIA20, ARIA13:
@@ -178,7 +178,7 @@ function checkAriaLandmarks(html: string): boolean {
   return isValid;
 }
 
-function checkAriaLiveRegions(html: string): boolean {
+export function checkAriaLiveRegions(html: string): boolean {
   /**
    * ARIA Live Regions
    * ARIA22:
@@ -194,7 +194,7 @@ function checkAriaLiveRegions(html: string): boolean {
   return true;
 }
 
-function checkAriaKeyboardNavigation(html: string): boolean {
+export function checkAriaKeyboardNavigation(html: string): boolean {
   /**
    * ARIA Keyboard Navigation
    * ARIA9:
@@ -218,7 +218,7 @@ function checkAriaKeyboardNavigation(html: string): boolean {
   return isValid;
 }
 
-function checkAriaRelationships(html: string): boolean {
+export function checkAriaRelationships(html: string): boolean {
   /**
    * ARIA Relationships
    * ARIA6, ARIA7:
@@ -243,7 +243,7 @@ function checkAriaRelationships(html: string): boolean {
   return isValid;
 }
 
-function checkAriaRoleDuplications(html: string): boolean {
+export function checkAriaRoleDuplications(html: string): boolean {
   /**
    * ARIA Role Duplications
    * ARIA5:
