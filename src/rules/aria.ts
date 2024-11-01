@@ -33,7 +33,7 @@ export function checkAriaLabels(html: string): boolean {
     const attributes = match[2];
 
     if (!ariaLabelRegex.test(attributes)) {
-      console.warn(`Element ${element} is missing aria-label or aria-labelledby or aria-describedby.`);
+      // console.warn(`Element ${element} is missing aria-label or aria-labelledby or aria-describedby.`);
       isValid = false;
     }
   }
@@ -57,7 +57,7 @@ export function checkAriaRequired(html: string): boolean {
     const attributes = match[1] + match[2];
 
     if (!ariaRequiredRegex.test(attributes)) {
-      console.warn(`Missing aria-required on required input field: ${match[0]}`);
+      // console.warn(`Missing aria-required on required input field: ${match[0]}`);
       isValid = false;
     }
   }
@@ -82,7 +82,7 @@ export function checkAriaFocusMgmt(html: string): boolean {
     const attributes = match[2];
     
     if (ariaHiddenRegex.test(attributes) || tabIndexRegex.test(attributes)) {
-      console.warn(`Focusable element ${match[0]} should manage focus properly with aria-hidden or tabindex.`);
+      // console.warn(`Focusable element ${match[0]} should manage focus properly with aria-hidden or tabindex.`);
       isValid = false;
     }
   }
@@ -105,7 +105,7 @@ export function checkAriaRoles(html: string): boolean {
   while ((match = roleRegex.exec(html)) !== null) {
     const role = match[1].trim();
     if (!validRoles.includes(role)) {
-      console.warn(`Invalid ARIA role: ${role}`);
+      // console.warn(`Invalid ARIA role: ${role}`);
       isValid = false;
     }
   }
@@ -127,7 +127,7 @@ export function checkAriaProperties(html: string): boolean {
   while ((match = ariaPropertiesRegex.exec(html)) !== null) {
     const ariaProperty = match[0];
     if (!ariaProperty) {
-      console.warn(`Invalid or missing ARIA property: ${ariaProperty}`);
+      // console.warn(`Invalid or missing ARIA property: ${ariaProperty}`);
       isValid = false;
     }
   }
@@ -148,7 +148,7 @@ export function checkAriaErrors(html: string): boolean {
   let isValid = true;
 
   if (!errorRegex.test(html) && !roleAlertRegex.test(html)) {
-    console.warn('Missing aria-invalid or role=alert for error identification.');
+    // console.warn('Missing aria-invalid or role=alert for error identification.');
     isValid = false;
   }
 
@@ -170,7 +170,7 @@ export function checkAriaLandmarks(html: string): boolean {
   while ((match = roleRegex.exec(html)) !== null) {
     const role = match[1].trim();
     if (!landmarkRoles.includes(role)) {
-      console.warn(`Missing or invalid ARIA landmark role: ${role}`);
+      // console.warn(`Missing or invalid ARIA landmark role: ${role}`);
       isValid = false;
     }
   }
@@ -187,7 +187,7 @@ export function checkAriaLiveRegions(html: string): boolean {
   const liveRegionRegex = /\baria-live=["'](polite|assertive)["']/i;
 
   if (!liveRegionRegex.test(html)) {
-    console.warn('Missing aria-live attribute for live region updates.');
+    // console.warn('Missing aria-live attribute for live region updates.');
     return false;
   }
 
@@ -210,7 +210,7 @@ export function checkAriaKeyboardNavigation(html: string): boolean {
     const attributes = match[2];
     
     if (!tabIndexRegex.test(attributes)) {
-      console.warn(`Missing tabindex on interactive element ${match[0]} for keyboard accessibility.`);
+      // console.warn(`Missing tabindex on interactive element ${match[0]} for keyboard accessibility.`);
       isValid = false;
     }
   }
@@ -235,7 +235,7 @@ export function checkAriaRelationships(html: string): boolean {
     const targetId = relationship.split('=')[1].replace(/["']/g, '');
 
     if (!new RegExp(`id=["']${targetId}["']`).test(html)) {
-      console.warn(`ARIA relationship attribute ${relationship} references non-existing element ID: ${targetId}`);
+      // console.warn(`ARIA relationship attribute ${relationship} references non-existing element ID: ${targetId}`);
       isValid = false;
     }
   }
@@ -262,7 +262,7 @@ export function checkAriaRoleDuplications(html: string): boolean {
     const role = match[1].trim();
     conflictingRoles.forEach(({ role: primaryRole, conflictingRole }) => {
       if (role === primaryRole && new RegExp(`role=["']${conflictingRole}["']`).test(html)) {
-        console.warn(`Element has conflicting roles: ${primaryRole} and ${conflictingRole}.`);
+        // console.warn(`Element has conflicting roles: ${primaryRole} and ${conflictingRole}.`);
         isValid = false;
       }
     });

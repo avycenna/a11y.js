@@ -19,7 +19,7 @@ export function checkKeyboardAccess(html: string): boolean {
 
   while ((match = regex.exec(cleanedHtml)) !== null) {
     const tag = match[0];
-    console.log('Evaluating tag:', tag);
+    // console.log('Evaluating tag:', tag);
 
     const hasTabindex = /tabindex=["']?\d*["']?/.test(tag) || /tabindex=["']?[-1]["']?/.test(tag);
     const hasFocus = /onfocus=|onclick=|onkeydown=|onkeyup=/i.test(tag);
@@ -28,17 +28,17 @@ export function checkKeyboardAccess(html: string): boolean {
 
     if (isInherentlyFocusable) {
       if (!hasTabindex && !hasFocus) {
-        console.warn(`Non-focusable interactive element detected: ${tag}`);
+        // console.warn(`Non-focusable interactive element detected: ${tag}`);
         allAccessible = false;
       }
     } else {
       if (!hasTabindex && !hasFocus) {
-        console.warn(`Non-focusable interactive element detected: ${tag}`);
+        // console.warn(`Non-focusable interactive element detected: ${tag}`);
         allAccessible = false;
       }
     }
   }
 
-  console.log('Final accessibility result:', allAccessible);
+  // console.log('Final accessibility result:', allAccessible);
   return allAccessible;
 }
